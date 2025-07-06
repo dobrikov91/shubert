@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: dobrikov91/shubert:v1.3.0
+    image: dobrikov91/shubert:latest
     restart: unless-stopped
     privileged: true
     ports:
