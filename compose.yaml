@@ -1,0 +1,15 @@
+services:
+  shubert:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dobrikov91/shubert:v1.3.0
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - "8088:8088"
+    volumes:
+      - /dev:/dev
+      - ./data:/app/data
+    devices:
+      - /dev/snd:/dev/snd

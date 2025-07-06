@@ -1,0 +1,52 @@
+{
+  "commands": [
+    {
+      "event": {
+        "device": "MIDI Out",
+        "channel": 0,
+        "key": 65,
+        "value": 0
+      },
+      "alias": "",
+      "trigger": "OnPress",
+      "command": "",
+      "timeout_ms": 0
+    },
+    {
+      "event": {
+        "device": "MIDI Out",
+        "channel": 0,
+        "key": 1,
+        "value": 0
+      },
+      "alias": "Give me name",
+      "trigger": "OnPress",
+      "command": "echo \"Hello SHubert\"",
+      "timeout_ms": 0
+    },
+    {
+      "event": {
+        "device": "MIDI Out",
+        "channel": 0,
+        "key": 64,
+        "value": 0
+      },
+      "alias": "MyButtonOnRelease",
+      "trigger": "OnRelease",
+      "command": "bash ./data/test.sh $VALUE",
+      "timeout_ms": 1000
+    },
+    {
+      "event": {
+        "device": "MIDI Out",
+        "channel": 0,
+        "key": 66,
+        "value": 0
+      },
+      "alias": "Windows notepad",
+      "trigger": "OnPress",
+      "command": "notepad.exe",
+      "timeout_ms": 0
+    }
+  ]
+}

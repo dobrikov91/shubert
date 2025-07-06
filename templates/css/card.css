@@ -1,0 +1,126 @@
+.card {
+    background: linear-gradient(to right, #59f7a0, #19afbd);
+
+    width: 400px;
+    height: 270px;
+
+    border: 0px;
+    border-radius: 7px;
+
+    margin: 0px;
+
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+}
+
+.card-button-holder{
+    margin: 0px;
+    padding: 0px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.card-button {
+    background: none;
+    border: 0px;
+
+    font-size: 24px;
+}
+
+#card-button-yes {
+    color: #3e983e;
+}
+
+#card-button-yes:hover {
+    color: #1eb81e;
+}
+
+#card-button-no {
+    color: #983e3e;
+}
+
+#card-button-no:hover {
+    color: #b81e1e;
+}
+
+.card-alias {
+    width: 96%;
+    height: 32px;
+    margin-top: 10px;
+    padding: 0px;
+
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+    color: #a3a3a3;
+
+    border: 0;
+    border-radius: 4px;
+}
+
+.card-command {
+    width: 93%;
+    height: 110px;
+    resize: none;
+
+    margin-top: 11px;
+    padding: 8px;
+
+    font-size: 18px;
+    font-weight: 400;
+    text-align: left;
+    color: #a3a3a3;
+
+    border: 0;
+    border-radius: 4px;
+}
+
+.card-params-holder {
+    width: 96%;
+
+    margin-top: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
+
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+}
+
+.card-params-label {
+    font-size: 18px;
+    font-weight: 400;
+    color: #717171;
+}
+
+.card-params-select {
+    background-color: #FFF; /* wtf */
+
+    width: 129px;
+    height: 26px;
+
+    margin-left: 10px;
+    margin-right: 34px;
+
+    border: 0;
+    border-radius: 4px;
+
+    font-size: 14px;
+    font-weight: 400;
+    color: #363636;
+}
+
+.card-params-number {
+    width: 70px;
+    height: 20px;
+
+    margin-left: 4px;
+
+    font-size: 14px;
+    font-weight: 400;
+    color: #363636;
+}

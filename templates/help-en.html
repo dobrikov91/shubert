@@ -1,0 +1,94 @@
+<head>
+    <title>Help</title>
+    <link rel="stylesheet" href="css/help.css">
+    <link rel="stylesheet" href="css/buttons.css">
+
+    <link href='https://fonts.googleapis.com/css?family=Mulish' rel='stylesheet'>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-button-holder">
+            <button class="header-button" type="button">{{.Version}}</button>
+            <a href="/help"><button class="header-button" type="button">Help</button></a>
+            <a href="/contact"><button class="header-button" type="button">Contact me</button></a>
+        </div>
+    </header>
+
+    <div class="column">
+
+        <h1 id="help">Help</h1>
+        <h2 id="description">Description</h2>
+        <p>This utility allows you to use a MIDI controller to send commands to the terminal. It can be useful for API
+            testing or pet projects. The utility enables quick mapping of any controller&#39;s buttons and supports
+            multiple controllers simultaneously.</p>
+        <h2 id="usage">Usage</h2>
+        <p>Run the utility as an application (Windows/MacOS) or in a Docker container (Linux) and connect the
+            controller. Open the link <a href="http://localhost:8088">http://localhost:8088</a> to configure the
+            controller through the web interface.</p>
+        <h2 id="interface">Interface</h2>
+        <p><img src="pics/help/interface.png" alt="interface"></p>
+        <p>The main page displays all configured MIDI controllers and cards for each controller where button-to-command
+            mappings are set. A demo config is loaded by default, which won’t work with your controller — it’s just for
+            reference.</p>
+        <h3 id="configuring-the-controller">Configuring the Controller</h3>
+        <p>To set up your controller:</p>
+        <ol>
+            <li>
+                <p>Click the &quot;Start Mapping&quot; button (the button will change color)</p>
+                <p><img src="pics/help/mapping-mode.png" alt="mapping-mode"></p>
+            </li>
+            <li>
+                <p>Press a button/turn a knob on the controller. A new card should appear, it will be highlighted and
+                    the page will scroll to it</p>
+                <p><img src="pics/help/new-card.png" alt="interface"></p>
+            </li>
+            <li>
+                <p>Fill in the fields:</p>
+                <ul>
+                    <li><strong>Alias</strong>: name of the card</li>
+                    <li><strong>Command</strong>: the assigned command. See the demo config for examples</li>
+                    <li><strong>Trigger</strong>: the moment of activation</li>
+                    <li><strong>Timeout</strong>: time after which command execution will be aborted (Not supported on
+                        Windows)</li>
+                </ul>
+            </li>
+            <li>
+                <p>After filling in the card, click the green check mark in the upper left corner to save. All cards are
+                    saved at once</p>
+            </li>
+            <li>Repeat the steps for all required commands. If you pressed a button by mistake, click the red cross in
+                the upper right corner of the card to delete it</li>
+            <li>To finish the setup, click the &quot;Stop Mapping&quot; button. It will return to its original state.
+            </li>
+        </ol>
+        <h3 id="normal-mode">Normal Mode</h3>
+        <p>Now, pressing the configured buttons will execute the assigned commands. The corresponding card will be
+            highlighted when triggered.</p>
+        <p><img src="pics/help/active-card.png" alt="active-card"></p>
+        <p>You can close the web page at this point — the program will continue running in the background.</p>
+        <p>The Mapping mode is only needed to create new cards. You can edit existing cards in normal mode.</p>
+        <h2 id="troubleshooting">Troubleshooting</h2>
+        <p><strong>? Controller mapping not working</strong></p>
+        <ul>
+            <li>Check the app logs in the console/container. The device should be recognized:
+                <code>2025/05/18 06:55:53 Current: [Launchkey Mini MK3 MIDI Port Launchkey Mini MK3 DAW Port]</code>
+            </li>
+            <li>If it&#39;s not recognized, restart the app with the controller connected and check again</li>
+        </ul>
+        <p><strong>? Command not working</strong></p>
+        <ul>
+            <li>Make sure you&#39;re not in Mapping mode</li>
+            <li>Check that you&#39;ve saved the configuration (either via &quot;Save configuration&quot; or the green
+                checkmark on any card)</li>
+            <li>Check the logs for button press events:
+                <code>2025/05/18 06:59:38 command not found event {Launchkey Mini MK3 MIDI Port 9 49 0} not found</code>
+            </li>
+        </ul>
+        <p><strong>? Nothing works</strong></p>
+        <ul>
+            <li>Click the “Contact me” button to reach out for support</li>
+        </ul>
+
+    </div>
+</body>

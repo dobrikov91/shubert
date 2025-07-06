@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SHubert</title>
+    <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/card.css">
+
+    <link href='https://fonts.googleapis.com/css?family=Mulish' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- <div class="bg-image"></div> -->
+
+    <header class="header">
+        <div class="header-button-holder">
+            <button class="header-button" type="button">{{.Version}}</button>
+            <a href="/help"><button class="header-button" type="button">Help</button></a>
+            <a href="/contact"><button class="header-button" type="button">Contact me</button></a>
+        </div>
+    </header>
+
+    <main>
+        <form action="/save" method="post">
+            <section class="caption">
+                <h1>SHubert</h1>
+                <h3>
+                    Control your system and external APIs<br>
+                    with your MIDI controller
+                </h3>
+
+                <section class="edit-button-holder">
+                    <label id="mapping-label">
+                        <input type="checkbox" id="mode" hidden />
+                        <p id="mapping-button">Start mapping</p>
+                    </label>
+                    <button type="submit" id="save-button">Save configuration</button>
+                </section>
+            </section>
+
+            <section class="content">
+                <section class="w3-container" id="card-holder"></section>
+            </section>
+        </form>
+    </main>
+
+    <script type="text/javascript" src="/scripts/editor.js"></script>
+
+    <script>
+        function connectWebSocket() {
+            socket = new WebSocket(location.origin.replace(/^http/, 'ws') + "/ws")
+
+            socket.onmessage = function (event) {
+                const data = JSON.parse(event.data);
+
+                if (data.highlightId) {
+                    highlightElement(data)
+                } else {
+                    updatePage(data);
+                }
+            };
+
+            socket.onerror = function (error) {
+                console.error("WebSocket Error:", error);
+            };
+
+            socket.onclose = function () {
+                console.log("WebSocket closed. Reconnecting...");
+                setTimeout(connectWebSocket, 5000);
+            };
+        }
+    </script>
+
+    <script>
+        editMode = document.getElementById('mode')
+        if ("{{.EditMode}}" == "true") {
+            editMode.checked = true
+        }
+
+        button = document.getElementById("mapping-button")
+        if (editMode.checked) {
+            button.innerText = "Stop mapping";
+        } else {
+            button.innerText = "Start mapping";
+        }
+    </script>
+</body>
+
+</html>

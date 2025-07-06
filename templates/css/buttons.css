@@ -1,0 +1,123 @@
+.header-button {
+    color: #fff;
+
+    padding: 0;
+    border: none;
+    background: none;
+
+    width: 32.7%;
+    height: 60px;
+
+    font-size: 19px;
+    font-weight: 600;
+    font-family: 'Mulish';
+
+    text-align: center;
+    color: #ededed;
+}
+
+.header-button:hover {
+    background: linear-gradient(to right, #59f7a0, #19afbd);
+    color: #000;
+}
+
+#save-button {
+    background: linear-gradient(to right, #59f7a0, #19afbd);
+
+    height: 100%;
+    width: 42%;
+
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    font-family: 'Mulish';
+
+    color: #161616;
+}
+
+#mapping-label {
+    height: 100%;
+    width: 42%;
+
+    margin: 0px;
+    padding: 0;
+
+    display: flex;
+    justify-content: center;
+
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#mapping-button {
+    background: linear-gradient(to right, #59f7a0, #19afbd);
+
+    width: 100%;
+
+    margin: 0px;
+    padding: 12px; /* weird trick to center text */
+    border: none;
+    border-radius: 8px;
+
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    font-family: 'Mulish';
+
+    color: #161616;
+
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+input:checked + #mapping-button {
+    background: linear-gradient(to right, #f759a0, #af19bd);
+}
+
+.modal-button-yes {
+    background: linear-gradient(to right, #59f7a0, #19afbd);
+
+    height: 100%;
+    width: 42%;
+
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    font-family: 'Mulish';
+
+    color: #161616;
+}
+
+.modal-button-no {
+    background: linear-gradient(to right, #f759a0, #af19bd);
+
+    height: 100%;
+    width: 42%;
+
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    font-family: 'Mulish';
+
+    color: #161616;
+}
