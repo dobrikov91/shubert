@@ -6,7 +6,7 @@ This utility allows you to use a MIDI controller to send commands to the termina
 Run the utility as an application (Windows/MacOS) or in a Docker container (Linux) and connect the controller. Open the link [http://localhost:8088](http://localhost:8088) to configure the controller through the web interface.
 
 ## Interface
-![interface](templates/pics/help/interface.png)
+![interface](../templates/pics/help/interface.png)
 
 The main page displays all configured MIDI controllers and cards for each controller where button-to-command mappings are set. A demo config is loaded by default, which won’t work with your controller — it’s just for reference.
 
@@ -14,10 +14,10 @@ The main page displays all configured MIDI controllers and cards for each contro
 To set up your controller:
 
 1. Click the "Start Mapping" button (the button will change color)
-   ![mapping-mode](templates/pics/help/mapping-mode.png)
+   ![mapping-mode](../templates/pics/help/mapping-mode.png)
 
 2. Press a button/turn a knob on the controller. A new card should appear, it will be highlighted and the page will scroll to it
-   ![interface](templates/pics/help/new-card.png)
+   ![interface](../templates/pics/help/new-card.png)
 
 3. Fill in the fields:
     - **Alias**: name of the card
@@ -31,7 +31,7 @@ To set up your controller:
 
 ### Normal Mode
 Now, pressing the configured buttons will execute the assigned commands. The corresponding card will be highlighted when triggered.
-![active-card](templates/pics/help/active-card.png)
+![active-card](../templates/pics/help/active-card.png)
 
 You can close the web page at this point — the program will continue running in the background.
 
