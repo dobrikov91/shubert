@@ -1,5 +1,7 @@
 # SHubert
 
+[![Docker Image CI](https://github.com/dobrikov91/shubert/actions/workflows/docker-image.yml/badge.svg)](https://github.com/dobrikov91/shubert/actions/workflows/docker-image.yml)
+
 ## Description
 The tool allows to use midi controller for sending shell commands. Could be useful for pet projects with api. App can sits in background and it has a web ui for any controller configuration.
 
