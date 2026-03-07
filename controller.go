@@ -105,5 +105,16 @@ func (c *Controller) handleCommand(e model.Event) (string, error) {
 		c.web.broadcast <- model.Commands{HighlightId: id + 1, Commands: []model.Command{}}
 	}
 
-	return model.RunCommand(cmd)
+	output, runErr := model.RunCommand(cmd)
+	if c.web != nil {
+		c.web.broadcast <- model.Commands{
+			HighlightId: id + 1,
+			HasOutput:   true,
+			Output:      output,
+			Alias:       cmd.Alias,
+			IsError:     runErr != nil,
+			Commands:    []model.Command{},
+		}
+	}
+	return output, runErr
 }

@@ -45,6 +45,8 @@
         </form>
     </main>
 
+    <div id="output-log" class="output-log"></div>
+
     <script type="text/javascript" src="/scripts/editor.js"></script>
 
     <script>
@@ -55,8 +57,11 @@
                 const data = JSON.parse(event.data);
 
                 if (data.highlightId) {
-                    highlightElement(data)
-                } else {
+                    highlightElement(data);
+                }
+                if (data.hasOutput) {
+                    showOutput(data);
+                } else if (!data.highlightId) {
                     updatePage(data);
                 }
             };

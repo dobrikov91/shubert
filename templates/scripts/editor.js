@@ -160,6 +160,31 @@ function updatePage(data) {
     });
 }
 
+const MAX_OUTPUT_ENTRIES = 30;
+
+function showOutput(data) {
+    const log = document.getElementById('output-log');
+    const entry = document.createElement('div');
+    entry.className = 'output-entry' + (data.isError ? ' output-error' : '');
+
+    const alias = data.alias || '(unnamed)';
+    const ts = new Date().toLocaleTimeString();
+    const text = data.output.trim() || '(no output)';
+
+    entry.innerHTML =
+        `<div class="output-header">` +
+            `<span class="output-ts">${ts}</span>` +
+            `<span class="output-alias">${escapeHtml(alias)}</span>` +
+        `</div>` +
+        `<pre class="output-text">${escapeHtml(text)}</pre>`;
+
+    log.prepend(entry);
+
+    while (log.children.length > MAX_OUTPUT_ENTRIES) {
+        log.removeChild(log.lastChild);
+    }
+}
+
 // Connect WebSocket on page load
 document.addEventListener('DOMContentLoaded', loadInitialData);
 

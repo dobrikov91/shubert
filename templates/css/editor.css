@@ -171,3 +171,60 @@ h3 {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
 }
+
+/* Command output log panel */
+.output-log {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 380px;
+    max-height: 280px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.88);
+    border-top-left-radius: 8px;
+    z-index: 1000;
+    padding: 6px 10px;
+}
+
+.output-entry {
+    border-bottom: 1px solid #2a2a2a;
+    padding: 6px 0;
+}
+
+.output-error {
+    border-left: 3px solid #ff4444;
+    padding-left: 6px;
+}
+
+.output-header {
+    display: flex;
+    align-items: baseline;
+    column-gap: 8px;
+    margin-bottom: 2px;
+}
+
+.output-ts {
+    color: #666;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.output-alias {
+    color: #00ff73;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.output-error .output-alias {
+    color: #ff6b6b;
+}
+
+.output-text {
+    margin: 0;
+    color: #ccc;
+    font-size: 11px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 80px;
+    overflow-y: auto;
+}

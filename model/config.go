@@ -23,8 +23,12 @@ type Command struct {
 
 type Commands struct {
 	Commands []Command `json:"commands"`
-	// ugly solution
-	HighlightId int `json:"highlightId,omitempty"`
+	// +1 is un ugly trick to avoid omitting field in json
+	HighlightId int    `json:"highlightId,omitempty"`
+	HasOutput   bool   `json:"hasOutput,omitempty"`
+	Output      string `json:"output,omitempty"`
+	Alias       string `json:"alias,omitempty"`
+	IsError     bool   `json:"isError,omitempty"`
 }
 
 type Config struct {
