@@ -15,6 +15,26 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+// basicAuth wraps a handler with HTTP Basic Authentication when SHUBERT_USER
+// and SHUBERT_PASS environment variables are set. If either variable is empty,
+// the handler is returned unchanged (auth disabled).
+func basicAuth(h http.HandlerFunc) http.HandlerFunc {
+	user := os.Getenv("SHUBERT_USER")
+	pass := os.Getenv("SHUBERT_PASS")
+	if user == "" || pass == "" {
+		return h
+	}
+	return func(w http.ResponseWriter, r *http.Request) {
+		u, p, ok := r.BasicAuth()
+		if !ok || u != user || p != pass {
+			w.Header().Set("WWW-Authenticate", `Basic realm="shubert"`)
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+		h(w, r)
+	}
+}
+
 type WebServer struct {
 	c         *Controller
 	broadcast chan model.Commands
@@ -31,18 +51,18 @@ func NewWebserver(c *Controller) *WebServer {
 }
 
 func (web *WebServer) Run() {
-	http.HandleFunc("/", web.handleHome)
-	http.HandleFunc("/help", web.handleHelp)
-	http.HandleFunc("/contact", web.handleContact)
+	http.HandleFunc("/", basicAuth(web.handleHome))
+	http.HandleFunc("/help", basicAuth(web.handleHelp))
+	http.HandleFunc("/contact", basicAuth(web.handleContact))
 
-	http.HandleFunc("/save", web.handleSave)
-	http.HandleFunc("/delete", web.handleDelete)
+	http.HandleFunc("/save", basicAuth(web.handleSave))
+	http.HandleFunc("/delete", basicAuth(web.handleDelete))
 
-	http.HandleFunc("/modeCommands", web.handleModeCommands)
-	http.HandleFunc("/modeEdit", web.handleModeConfig)
+	http.HandleFunc("/modeCommands", basicAuth(web.handleModeCommands))
+	http.HandleFunc("/modeEdit", basicAuth(web.handleModeConfig))
 
-	http.HandleFunc("/ws", web.handleConnections)
-	http.HandleFunc("/init", web.handleInitialData)
+	http.HandleFunc("/ws", basicAuth(web.handleConnections))
+	http.HandleFunc("/init", basicAuth(web.handleInitialData))
 
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./templates/css"))))
 	http.Handle("/pics/", http.StripPrefix("/pics/", http.FileServer(http.Dir("./templates/pics"))))
