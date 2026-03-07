@@ -201,10 +201,12 @@ func (web *WebServer) handleSave(w http.ResponseWriter, r *http.Request) {
 		commands = append(commands, cmd)
 	}
 
+	web.c.configMu.Lock()
 	web.c.Config.ClearConfig()
 	for _, cmd := range commands {
 		web.c.Config.AddCommand(cmd)
 	}
+	web.c.configMu.Unlock()
 
 	web.saveConfig(w, r)
 }
@@ -223,12 +225,19 @@ func (web *WebServer) handleDelete(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
 	index, err := atoi(r.FormValue("index"))
-	if err != nil || index < 0 || index >= len(web.c.Config.Data.Commands) {
+	if err != nil {
 		http.Error(w, "Invalid index", http.StatusBadRequest)
 		return
 	}
 
+	web.c.configMu.Lock()
+	if index < 0 || index >= len(web.c.Config.Data.Commands) {
+		web.c.configMu.Unlock()
+		http.Error(w, "Invalid index", http.StatusBadRequest)
+		return
+	}
 	web.c.Config.DeleteCommand(index)
+	web.c.configMu.Unlock()
 
 	web.broadcast <- web.c.Config.Data
 	web.saveConfig(w, r)

@@ -4,6 +4,7 @@ import (
 	"dobrikov91/shubert/model"
 	"fmt"
 	"log"
+	"sync"
 )
 
 type Controller struct {
@@ -11,6 +12,7 @@ type Controller struct {
 	Config      *model.Config
 	midiDevices *model.MidiDevices
 	web         *WebServer
+	configMu    sync.RWMutex
 
 	Port    string
 	Version string
@@ -62,6 +64,9 @@ func (c *Controller) MainLoop(debug bool) {
 }
 
 func (c *Controller) handleEdit(e model.Event) error {
+	c.configMu.Lock()
+	defer c.configMu.Unlock()
+
 	if id, err := c.Config.GetEventId(e); err == nil {
 		if c.web != nil {
 			c.web.broadcast <- model.Commands{HighlightId: id + 1, Commands: []model.Command{}}
@@ -87,7 +92,9 @@ func (c *Controller) handleEdit(e model.Event) error {
 }
 
 func (c *Controller) handleCommand(e model.Event) (string, error) {
+	c.configMu.RLock()
 	cmd, id, err := c.Config.GetCommandWithId(e)
+	c.configMu.RUnlock()
 	if err != nil {
 		return "", fmt.Errorf("command not found %v", err)
 	}
