@@ -10,6 +10,7 @@ var version = "undefined"
 
 func main() {
 	port := flag.String("port", "8088", "web port")
+	configPath := flag.String("config", "./data/config.json", "path to config file")
 	debug := flag.Bool("kb", false, "mock midi input with laptop keyboard")
 	versionFlag := flag.Bool("version", false, "print version information")
 	flag.Parse()
@@ -19,7 +20,7 @@ func main() {
 		return
 	}
 
-	c, err := NewController("./data/config.json", *port, version)
+	c, err := NewController(*configPath, *port, version)
 	if err != nil {
 		log.Fatalf("Can't create controller %v", err)
 	}
