@@ -4,15 +4,19 @@ import (
 	"dobrikov91/shubert/model"
 	"fmt"
 	"log"
+	"path/filepath"
+	"strings"
 	"sync"
 )
 
 type Controller struct {
-	EditMode    bool
-	Config      *model.Config
-	midiDevices *model.MidiDevices
-	web         *WebServer
-	configMu    sync.RWMutex
+	EditMode      bool
+	Config        *model.Config
+	midiDevices   *model.MidiDevices
+	web           *WebServer
+	configMu      sync.RWMutex
+	ProfilesDir   string
+	ActiveProfile string
 
 	Port    string
 	Version string
@@ -26,12 +30,14 @@ func NewController(path string, port string, version string) (*Controller, error
 
 	d := model.NewMidiDevices()
 	return &Controller{
-		EditMode:    false,
-		Config:      c,
-		midiDevices: d,
-		web:         nil, // add later
-		Port:        port,
-		Version:     version,
+		EditMode:      false,
+		Config:        c,
+		midiDevices:   d,
+		web:           nil, // add later
+		ProfilesDir:   filepath.Dir(path),
+		ActiveProfile: strings.TrimSuffix(filepath.Base(path), ".json"),
+		Port:          port,
+		Version:       version,
 	}, nil
 }
 

@@ -9,7 +9,9 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strconv"
+	"strings"
 	"sync"
 
 	"github.com/gorilla/websocket"
@@ -63,6 +65,9 @@ func (web *WebServer) Run() {
 
 	http.HandleFunc("/ws", basicAuth(web.handleConnections))
 	http.HandleFunc("/init", basicAuth(web.handleInitialData))
+
+	http.HandleFunc("/profiles", basicAuth(web.handleProfiles))
+	http.HandleFunc("/switch", basicAuth(web.handleSwitch))
 
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./templates/css"))))
 	http.Handle("/pics/", http.StripPrefix("/pics/", http.FileServer(http.Dir("./templates/pics"))))
@@ -265,4 +270,51 @@ func (web *WebServer) handleDelete(w http.ResponseWriter, r *http.Request) {
 
 func atoi(s string) (int, error) {
 	return strconv.Atoi(s)
+}
+
+// handleProfiles returns a JSON array of profile names (*.json files in ProfilesDir).
+func (web *WebServer) handleProfiles(w http.ResponseWriter, r *http.Request) {
+	entries, err := os.ReadDir(web.c.ProfilesDir)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	var profiles []string
+	for _, e := range entries {
+		if !e.IsDir() && strings.HasSuffix(e.Name(), ".json") {
+			profiles = append(profiles, strings.TrimSuffix(e.Name(), ".json"))
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(profiles)
+}
+
+// handleSwitch loads a different config profile (POST /switch?profile=<name>).
+func (web *WebServer) handleSwitch(w http.ResponseWriter, r *http.Request) {
+	name := r.URL.Query().Get("profile")
+	if name == "" {
+		http.Error(w, "profile name required", http.StatusBadRequest)
+		return
+	}
+	if strings.ContainsAny(name, "/\\.") {
+		http.Error(w, "invalid profile name", http.StatusBadRequest)
+		return
+	}
+
+	newPath := filepath.Join(web.c.ProfilesDir, name+".json")
+	newConfig, err := model.NewConfig(newPath)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("failed to load profile: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	web.c.configMu.Lock()
+	web.c.Config = newConfig
+	web.c.ActiveProfile = name
+	web.c.configMu.Unlock()
+
+	web.broadcast <- web.c.Config.Data
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

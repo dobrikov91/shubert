@@ -14,6 +14,10 @@
     <!-- <div class="bg-image"></div> -->
 
     <header class="header">
+        <div class="header-profile-holder">
+            <label class="header-profile-label">Profile</label>
+            <select id="profile-select" class="header-profile-select"></select>
+        </div>
         <div class="header-button-holder">
             <button class="header-button" type="button">{{.Version}}</button>
             <a href="/help"><button class="header-button" type="button">Help</button></a>
@@ -89,6 +93,31 @@
         } else {
             button.innerText = "Start mapping";
         }
+    </script>
+
+    <script>
+        const activeProfile = "{{.ActiveProfile}}";
+
+        function loadProfiles() {
+            fetch('/profiles')
+                .then(r => r.json())
+                .then(profiles => {
+                    const sel = document.getElementById('profile-select');
+                    sel.innerHTML = profiles.map(p =>
+                        `<option value="${escapeHtml(p)}"${p === activeProfile ? ' selected' : ''}>${escapeHtml(p)}</option>`
+                    ).join('');
+                    sel.addEventListener('change', () => switchProfile(sel.value));
+                })
+                .catch(err => console.error('Failed to load profiles:', err));
+        }
+
+        function switchProfile(name) {
+            fetch(`/switch?profile=${encodeURIComponent(name)}`, { method: 'POST' })
+                .then(r => { if (r.ok || r.redirected) location.href = r.url || '/'; })
+                .catch(err => console.error('Profile switch failed:', err));
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProfiles);
     </script>
 </body>
 

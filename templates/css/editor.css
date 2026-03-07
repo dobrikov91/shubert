@@ -59,6 +59,38 @@ header {
     float: right;
 }
 
+.header-profile-holder {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    padding-left: 16px;
+    float: left;
+}
+
+.header-profile-label {
+    color: #aaa;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.header-profile-select {
+    background: #111;
+    color: #ededed;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 14px;
+    font-family: 'Mulish', sans-serif;
+    cursor: pointer;
+}
+
+.header-profile-select:focus {
+    outline: none;
+    border-color: #00ff73;
+}
+
 h1 {
     margin-top: 35px;
     margin-bottom: 0px;
