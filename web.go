@@ -158,28 +158,52 @@ func (web *WebServer) handleContact(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, web.c)
 }
 
-func commandFromForm(form url.Values, i int) model.Command {
+func commandFromForm(form url.Values, i int) (model.Command, error) {
+	channel, err := atoi(form["Channel"][i])
+	if err != nil {
+		return model.Command{}, fmt.Errorf("invalid Channel: %w", err)
+	}
+	key, err := atoi(form["Key"][i])
+	if err != nil {
+		return model.Command{}, fmt.Errorf("invalid Key: %w", err)
+	}
+	timeout, err := atoi(form["Timeout"][i])
+	if err != nil {
+		return model.Command{}, fmt.Errorf("invalid Timeout: %w", err)
+	}
 	return model.Command{
 		Event: model.Event{
 			Device:  form["Device"][i],
-			Channel: atoi(form["Channel"][i]),
-			Key:     atoi(form["Key"][i]),
+			Channel: channel,
+			Key:     key,
 			Value:   0,
 		},
 		Alias:     form["Alias"][i],
 		Trigger:   form["Trigger"][i],
 		Command:   form["Command"][i],
-		TimeoutMs: atoi(form["Timeout"][i]),
-	}
+		TimeoutMs: timeout,
+	}, nil
 }
 
 func (web *WebServer) handleSave(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "invalid form data", http.StatusBadRequest)
+		return
+	}
+
+	var commands []model.Command
+	for i := range len(r.Form["Command"]) {
+		cmd, err := commandFromForm(r.Form, i)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		commands = append(commands, cmd)
+	}
 
 	web.c.Config.ClearConfig()
-
-	for i := range len(r.Form["Command"]) {
-		web.c.Config.AddCommand(commandFromForm(r.Form, i))
+	for _, cmd := range commands {
+		web.c.Config.AddCommand(cmd)
 	}
 
 	web.saveConfig(w, r)
@@ -198,8 +222,8 @@ func (web *WebServer) saveConfig(w http.ResponseWriter, r *http.Request) {
 func (web *WebServer) handleDelete(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
-	index := atoi(r.FormValue("index"))
-	if index < 0 || index >= len(web.c.Config.Data.Commands) {
+	index, err := atoi(r.FormValue("index"))
+	if err != nil || index < 0 || index >= len(web.c.Config.Data.Commands) {
 		http.Error(w, "Invalid index", http.StatusBadRequest)
 		return
 	}
@@ -210,7 +234,6 @@ func (web *WebServer) handleDelete(w http.ResponseWriter, r *http.Request) {
 	web.saveConfig(w, r)
 }
 
-func atoi(s string) int {
-	val, _ := strconv.Atoi(s)
-	return val
+func atoi(s string) (int, error) {
+	return strconv.Atoi(s)
 }
