@@ -1,4 +1,4 @@
-set VERSION=1.3.0
+set VERSION=1.4.0
 
 go build -v -ldflags="-X main.version=%VERSION% -extldflags=-static" -o build/shubert-win-x64.exe
 

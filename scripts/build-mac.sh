@@ -1,4 +1,4 @@
-VERSION=1.3.0
+VERSION=1.4.0
 
 # static isn't supported on Mac
 env CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build -v -ldflags="-X main.version=$VERSION" -o build/shubert-mac-arm64
