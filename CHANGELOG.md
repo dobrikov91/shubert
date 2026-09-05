@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2026-09-05
+### Added
+- Automated GitHub release workflow: pushing a version tag builds native Linux/macOS/Windows binaries and publishes them as release assets
+### Changed
+- Docker CI now tags published images with the version number in addition to `:latest`
+
 ## [1.4.0] - 2026-09-05
 ### Changed
 - Embed web UI templates and static assets into the binary, so the app can be distributed as a single self-contained file without the `templates` folder
