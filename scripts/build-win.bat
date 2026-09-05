@@ -1,6 +1,6 @@
-set VERSION=1.4.0
+set /p VERSION=<version.txt
 
-go build -v -ldflags="-X main.version=%VERSION% -extldflags=-static" -o build/shubert-win-x64.exe
+go build -v -ldflags="-extldflags=-static" -o build/shubert-win-x64.exe
 
 # copy data
 cd ./build

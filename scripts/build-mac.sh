@@ -1,8 +1,8 @@
-VERSION=1.4.0
+VERSION=$(cat version.txt)
 
 # static isn't supported on Mac
-env CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build -v -ldflags="-X main.version=$VERSION" -o build/shubert-mac-arm64
-env CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -v -ldflags="-X main.version=$VERSION" -o build/shubert-mac-amd64
+env CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build -v -o build/shubert-mac-arm64
+env CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -v -o build/shubert-mac-amd64
 
 # copy data
 cd ./build
