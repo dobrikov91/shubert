@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2026-09-05
+### Added
+- Test coverage for the web save/delete handlers and MIDI message decoding (NoteOn/NoteOff/ControlChange), using a virtual MIDI driver so it runs without real hardware
+### Changed
+- `MidiDevices` now accepts an injectable MIDI driver (defaults to the real one in production), enabling the tests above
+
 ## [1.4.1] - 2026-09-05
 ### Added
 - Automated GitHub release workflow: pushing a version tag builds native Linux/macOS/Windows binaries and publishes them as release assets

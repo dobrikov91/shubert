@@ -97,6 +97,27 @@ func TestConfig(t *testing.T) {
 	}
 }
 
+func TestConfigClearConfig(t *testing.T) {
+	c := &Config{}
+
+	c.AddCommand(Command{Event{"midi1", 1, 2, 3}, "Release", "OnRelease", "Cmd1", 0})
+	c.AddCommand(Command{Event{"midi1", 11, 12, 13}, "Change", "OnChange", "Cmd2", 0})
+	if len(c.Data.Commands) != 2 {
+		t.Fatalf("Expected 2 commands before clear, got %d", len(c.Data.Commands))
+	}
+
+	c.ClearConfig()
+	if len(c.Data.Commands) != 0 {
+		t.Errorf("Expected 0 commands after clear, got %d", len(c.Data.Commands))
+	}
+
+	// config must still be usable after clearing
+	c.AddCommand(Command{Event{"midi1", 21, 22, 23}, "Press", "OnPress", "Cmd3", 0})
+	if len(c.Data.Commands) != 1 {
+		t.Errorf("Expected 1 command after re-adding, got %d", len(c.Data.Commands))
+	}
+}
+
 func TestConfigSaveLoad(t *testing.T) {
 	c := &Config{}
 	c.FilePath = "test.json"
