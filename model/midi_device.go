@@ -13,20 +13,25 @@ type MidiDevices struct {
 	Event              chan Event
 	Quit               chan bool
 	DeviceStopFuncList []func()
+
+	// newDriver constructs the MIDI driver used to scan for devices.
+	// Defaults to rtmididrv (real hardware); tests can override it with
+	// a virtual driver such as testdrv.
+	newDriver func() (drivers.Driver, error)
 }
 
 func NewMidiDevices() *MidiDevices {
 	return &MidiDevices{
-		make(chan Event),
-		make(chan bool),
-		nil,
+		Event: make(chan Event),
+		Quit:  make(chan bool),
+		newDriver: func() (drivers.Driver, error) {
+			return rtmididrv.New()
+		},
 	}
 }
 
 func (m *MidiDevices) ScanInputDevices() {
-	var driver *rtmididrv.Driver
-
-	driver, err := rtmididrv.New()
+	driver, err := m.newDriver()
 	if err != nil {
 		log.Fatalf("Failed to create MIDI driver: %v", err)
 	}
@@ -41,7 +46,7 @@ func (m *MidiDevices) ScanInputDevices() {
 			log.Printf("Failed to close midi driver: %v", err)
 		}
 
-		driver, err := rtmididrv.New()
+		driver, err := m.newDriver()
 		if err != nil {
 			log.Fatalf("Failed to create MIDI driver: %v", err)
 		}
