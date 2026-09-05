@@ -5,9 +5,16 @@
 ## Description
 The tool allows to use midi controller for sending shell commands. Could be useful for pet projects with api. App can sits in background and it has a web ui for any controller configuration.
 
+## Requirements
+- **Linux**: the ALSA runtime library must be installed for MIDI device access, e.g. `sudo apt install libasound2` (Debian/Ubuntu) or `sudo dnf install alsa-lib` (Fedora). Most desktop distros already have this; minimal/server/container images usually don't.
+- **macOS / Windows**: no extra runtime packages needed — MIDI access uses the OS's built-in CoreMIDI / WinMM APIs.
+
 ## Usage
 [ENG](docs/help-en.md)
 [RUS](docs/help-rus.md)
+
+## Download
+Pre-built binaries for Linux, macOS, and Windows are published on the [Releases page](https://github.com/dobrikov91/shubert/releases) — download the archive for your platform, extract it, and run the executable directly. See [Requirements](#requirements) above for the one runtime dependency Linux needs.
 
 ## Build
 0. Install go lang https://go.dev/doc/install
