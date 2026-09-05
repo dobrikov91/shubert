@@ -1,12 +1,17 @@
 package main
 
 import (
+	_ "embed"
 	"flag"
 	"fmt"
 	"log"
+	"strings"
 )
 
-var version = "undefined"
+//go:embed version.txt
+var versionRaw string
+
+var version = strings.TrimSpace(versionRaw)
 
 func main() {
 	port := flag.String("port", "8088", "web port")

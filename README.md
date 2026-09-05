@@ -14,6 +14,8 @@ The tool allows to use midi controller for sending shell commands. Could be usef
 1. Clone the repo `git clone https://github.com/dobrikov91/shubert.git`
 2. Build app `./scripts/build-mac.sh` or `./scripts/build-win.bat`. Output will be in `build` folder
 
+The web UI (HTML/CSS/JS/images) is embedded into the binary at build time, so the `templates` folder is **not** required for distribution — only the single executable (plus the `data` folder, which holds your config) needs to be shipped/copied.
+
 ## Docker
 Note: app inside the docker will execute commands inside the container. I found it useful to call web API of another service.
 
