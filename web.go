@@ -2,9 +2,11 @@ package main
 
 import (
 	"dobrikov91/shubert/model"
+	"embed"
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/fs"
 	"log"
 	"net/http"
 	"net/url"
@@ -14,6 +16,9 @@ import (
 
 	"github.com/gorilla/websocket"
 )
+
+//go:embed templates
+var templatesFS embed.FS
 
 type WebServer struct {
 	c         *Controller
@@ -44,9 +49,13 @@ func (web *WebServer) Run() {
 	http.HandleFunc("/ws", web.handleConnections)
 	http.HandleFunc("/init", web.handleInitialData)
 
-	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./templates/css"))))
-	http.Handle("/pics/", http.StripPrefix("/pics/", http.FileServer(http.Dir("./templates/pics"))))
-	http.Handle("/scripts/", http.StripPrefix("/scripts/", http.FileServer(http.Dir("./templates/scripts"))))
+	cssFS, _ := fs.Sub(templatesFS, "templates/css")
+	picsFS, _ := fs.Sub(templatesFS, "templates/pics")
+	scriptsFS, _ := fs.Sub(templatesFS, "templates/scripts")
+
+	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.FS(cssFS))))
+	http.Handle("/pics/", http.StripPrefix("/pics/", http.FileServer(http.FS(picsFS))))
+	http.Handle("/scripts/", http.StripPrefix("/scripts/", http.FileServer(http.FS(scriptsFS))))
 
 	hostname, err := os.Hostname()
 	if err != nil {
@@ -129,7 +138,7 @@ func (web *WebServer) handleModeConfig(w http.ResponseWriter, r *http.Request) {
 }
 
 func (web *WebServer) handleHome(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("./templates/editor.html")
+	tmpl, err := template.ParseFS(templatesFS, "templates/editor.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -139,7 +148,7 @@ func (web *WebServer) handleHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func (web *WebServer) handleHelp(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("./templates/help-en.html")
+	tmpl, err := template.ParseFS(templatesFS, "templates/help-en.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -149,7 +158,7 @@ func (web *WebServer) handleHelp(w http.ResponseWriter, r *http.Request) {
 }
 
 func (web *WebServer) handleContact(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("./templates/contact.html")
+	tmpl, err := template.ParseFS(templatesFS, "templates/contact.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

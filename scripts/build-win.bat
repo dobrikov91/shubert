@@ -5,6 +5,5 @@ go build -v -ldflags="-X main.version=%VERSION% -extldflags=-static" -o build/sh
 # copy data
 cd ./build
 robocopy ../data ./data /e
-robocopy ../templates ./templates /e
 
-tar -cavf shubert-win-x64-%VERSION%.zip shubert-win-x64.exe data templates
+tar -cavf shubert-win-x64-%VERSION%.zip shubert-win-x64.exe data
